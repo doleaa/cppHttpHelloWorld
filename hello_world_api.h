@@ -12,11 +12,12 @@ public:
     HelloWorldApi();
     explicit HelloWorldApi(std::string givenMessage);
 
-    void setupEndpointHandlers(const std::shared_ptr<Pistache::Http::Endpoint>& endpointSPtr);
-
     void greetAll(const Pistache::Rest::Request& request, Pistache::Http::ResponseWriter response);
     void greetName(const Pistache::Rest::Request& request, Pistache::Http::ResponseWriter response);
     void greetNumber(const Pistache::Rest::Request& request, Pistache::Http::ResponseWriter response);
+    void changeGreet(const Pistache::Rest::Request& request, Pistache::Http::ResponseWriter response);
+
+    void setupEndpointHandlers(const std::shared_ptr<Pistache::Http::Endpoint>& endpointSPtr);
 
 private:
     std::string d_returnableMessage;

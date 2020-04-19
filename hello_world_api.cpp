@@ -1,5 +1,7 @@
 #include "hello_world_api.h"
 
+#include <rapidjson/document.h>
+
 HelloWorldApi::HelloWorldApi() : d_returnableMessage("Hai, salut!") {}
 
 HelloWorldApi::HelloWorldApi(std::string givenMessage) : d_returnableMessage(givenMessage) {}
@@ -22,6 +24,17 @@ void HelloWorldApi::greetNumber(const Pistache::Rest::Request &request, Pistache
     );
 }
 
+void HelloWorldApi::changeGreet(const Pistache::Rest::Request &request, Pistache::Http::ResponseWriter response) {
+    rapidjson::Document document;
+    document.Parse(request.body().c_str());
+
+    if (!document["newGreeting"].IsNull()) {
+        d_returnableMessage = document["newGreeting"].GetString();
+    }
+
+    response.send(Pistache::Http::Code::Ok);
+}
+
 void HelloWorldApi::setupEndpointHandlers(const std::shared_ptr<Pistache::Http::Endpoint>& endpointSPtr) {
     Pistache::Rest::Router router;
 
@@ -39,6 +52,11 @@ void HelloWorldApi::setupEndpointHandlers(const std::shared_ptr<Pistache::Http::
             router,
             "/greet/groupOf/:number",
             Pistache::Rest::Routes::bind(&HelloWorldApi::greetNumber, this)
+    );
+    Pistache::Rest::Routes::Post(
+            router,
+            "/changeGreeting",
+            Pistache::Rest::Routes::bind(&HelloWorldApi::changeGreet, this)
     );
 
     endpointSPtr->setHandler(router.handler());
