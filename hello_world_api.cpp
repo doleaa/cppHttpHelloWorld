@@ -28,7 +28,7 @@ void HelloWorldApi::changeGreet(const Pistache::Rest::Request &request, Pistache
     rapidjson::Document document;
     document.Parse(request.body().c_str());
 
-    if (!document["newGreeting"].IsNull()) {
+    if (document.HasMember("newGreeting") && !document["newGreeting"].IsNull()) {
         d_returnableMessage = document["newGreeting"].GetString();
     }
 

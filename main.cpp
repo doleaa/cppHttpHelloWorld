@@ -9,9 +9,11 @@ int main() {
 
     auto endpointOptions = Pistache::Http::Endpoint::options().threads(1);
     const auto server = std::make_shared<Pistache::Http::Endpoint>(addr);
+
     server->init(endpointOptions);
 
     HelloWorldApi helloWorldApi;
     helloWorldApi.setupEndpointHandlers(server);
+
     server->serve();
 }
