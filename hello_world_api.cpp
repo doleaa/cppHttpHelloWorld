@@ -1,13 +1,28 @@
 #include "hello_world_api.h"
 
 #include <rapidjson/document.h>
+#include <rapidjson/stringbuffer.h>
+#include <writer.h>
 
 HelloWorldApi::HelloWorldApi() : d_returnableMessage("Hai, salut!") {}
 
 HelloWorldApi::HelloWorldApi(std::string givenMessage) : d_returnableMessage(givenMessage) {}
 
 void HelloWorldApi::greetAll(const Pistache::Rest::Request &request, Pistache::Http::ResponseWriter response) {
-    response.send(Pistache::Http::Code::Ok, "Muie la toti ba!!!..." + d_returnableMessage);
+    rapidjson::StringBuffer outputBuffer;
+    rapidjson::Writer<rapidjson::StringBuffer> writer(outputBuffer);
+    if (writer.StartObject()) {
+        writer.Key("currentReturnableMessage");
+        writer.String(d_returnableMessage.c_str());
+
+        writer.EndObject();
+    }
+
+    response.headers().add<Pistache::Http::Header::ContentType>(MIME(Application, Json));
+    response.send(
+        Pistache::Http::Code::Ok,
+        outputBuffer.GetString()
+    );
 }
 
 void HelloWorldApi::greetName(const Pistache::Rest::Request &request, Pistache::Http::ResponseWriter response) {
