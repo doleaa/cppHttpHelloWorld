@@ -3,9 +3,9 @@
 
 #include <pistache/http.h>
 #include <pistache/router.h>
+#include <pistache/endpoint.h>
 
 #include <string>
-#include <pistache/endpoint.h>
 
 class HelloWorldApi {
 public:

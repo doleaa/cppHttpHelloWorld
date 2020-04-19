@@ -1,6 +1,3 @@
-#include <iostream>
-
-#include <pistache/net.h>
 #include <pistache/http.h>
 #include <pistache/router.h>
 #include <pistache/endpoint.h>
@@ -14,7 +11,7 @@ int main() {
     const auto server = std::make_shared<Pistache::Http::Endpoint>(addr);
     server->init(endpointOptions);
 
-    HelloWorldApi helloWorldApi("Aici, un mesaj dubios...");
+    HelloWorldApi helloWorldApi();
     helloWorldApi.setupEndpointHandlers(server);
     server->serve();
 }
