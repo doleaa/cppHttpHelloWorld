@@ -8,7 +8,7 @@ project(${PROJ_NAME})
 set(CMAKE_CXX_STANDARD 14)
 
 ### ADD BOOST ###
-find_package(Boost COMPONENTS program_options REQUIRED)
+find_package(Boost REQUIRED)
 include_directories(${Boost_INCLUDE_DIR})
 
 
